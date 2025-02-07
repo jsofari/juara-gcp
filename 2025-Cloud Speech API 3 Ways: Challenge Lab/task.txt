@@ -1,0 +1,31 @@
+Create API Key
+APIs & Services -> Credentials -> Create Credentials -> API Key
+export API_KEY=changeme
+
+Create Virtual env
+sudo apt-get install -y virtualenv
+python3 -m venv venv
+source venv/bin/activate
+
+TASK 2 (in venv)
+curl -H "Authorization: Bearer "$(gcloud auth application-default print-access-token) \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d @synthesize-text.json "https://texttospeech.googleapis.com/v1/text:synthesize" \
+  > synthesize-text.txt
+
+Download file
+/home/student-03-xxxxxxxxx/synthesize-text-audio.mp3
+
+
+TASK 3
+curl -s -X POST -H "Content-Type: application/json" --data-binary @speech_request.json \
+"https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > response.json
+
+TASK 4
+TEXT_ONE="changeme"
+TEXT_ONE_ENCODED=$(echo "$TEXT_ONE" | jq -sRr '@uri')
+curl "https://translation.googleapis.com/language/translate/v2?target=en&key=${API_KEY}&q=${TEXT_ONE_ENCODED}" > translated_response.txt
+
+TASK 5
+DETECT="changeme"
+curl -X POST "https://translation.googleapis.com/language/translate/v2/detect?key=${API_KEY}" -d "q=${DETECT}"
